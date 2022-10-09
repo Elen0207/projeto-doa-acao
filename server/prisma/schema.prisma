@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User { // crianção do banco
+  idUser String @id @default(uuid()) // id unico e universal
+  nome String 
+  celular String?
+  cpf String? @unique
+  email String @unique
+  senha String?
+  cep String?
+  complemento String?
+  // acima estão as colunas do banco
+
+
+  @@map("user") // nome do banco
+}
+
+model Product { // crianção do banco
+  idProduct String @id @default(uuid()) // id unico e universal
+  produto String
+  categoria String
+  descricao String
+  fotoProduto String
+  cepDoador String
+  complementoDoador String
+  chaveUnicaDoador  String
+
+  status  Boolean @default(true)
+
+  @@map("product") // nome do banco
+}
+
+model Donation {
+  idDonation String @id @default(uuid()) // id unico e universal
+  chaveUnicaDoador String
+  chaveUnicaBeneficiario String
+  idProduct String
+  dataMaxRetirada DateTime @db.Date()
+  dataRetirada DateTime? @db.Date()
+
+  @@map("donation") // nome do banco
+}
+// comando para criar o banco em desenvolvimento =  npx prisma migrate dev
+// comando para visualizar o banco = npx prisma studio
+
+// documentação para criar o banco as funções
+// https://www.prisma.io/docs/concepts/components/prisma-client/crud
